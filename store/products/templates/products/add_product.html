@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} - Добавление продутка
+{% endblock %}
+
+{% block sidebar %}
+{% include 'inc/_sidebar.html' %}
+{% endblock %}
+
+{% block content %}
+<h1>Добавление продутка</h1>
+
+<form action="{% url 'add_product' %}" method='post'>
+    {% csrf_token %}
+
+    {% comment 'Первый способ добавления формы'%}
+    {{ form.as_p }}
+    {% endcomment %}
+
+    {% comment 'Второй способ добавления формы'%}
+    {{ form.non_fields.errors }}
+    <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Наз-ние продукта: </label>
+        {{ form.title }}
+        <div class="invalid-feedback">
+            {{ form.title.errors }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">Описание: </label>
+        {{ form.content }}
+        <div class="invalid-feedback">
+            {{ form.content.errors }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.price.id_for_label }}">Стоимость: </label>
+        {{ form.price }}
+        <div class="invalid-feedback">
+            {{ form.price.errors }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.is_published.id_for_label }}">Опубликовано: </label>
+        {{ form.is_published }}
+        <div class="invalid-feedback">
+            {{ form.is_published.errors }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="{{ form.category.id_for_label }}">Категория: </label>
+        {{ form.category }}
+        <div class="invalid-feedback">
+            {{ form.category.errors }}
+        </div>
+    </div>
+    {% endcomment %}
+
+    {% comment 'Третий способ добавления формы'%}
+    {% for field in form %}
+        <div class="form-group">
+            {{ field.label_tag }}
+            {{ field }}
+            <div class="invalid-feedback">
+                {{ field.errors }}
+            </div>
+        </div>
+    {% endfor %}
+    {% endcomment %}
+
+    {{ form.as_p }}
+
+    <button type="submit" class="btn btn-primary btn-block">Добавить продукт</button>
+</form>
+
+{% endblock %}
